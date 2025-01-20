@@ -17,6 +17,8 @@ public class CreateFoodRequest {
 
     private List<String> images; // List of image URLs
 
+    private boolean topMeels; //false --> does not  in the main page
+
     private Long restaurantId; // The restaurant ID (used to associate the food with a restaurant)
     
     private boolean vegetarian; // Corrected the typo from "vegitarin" to "vegetarian"

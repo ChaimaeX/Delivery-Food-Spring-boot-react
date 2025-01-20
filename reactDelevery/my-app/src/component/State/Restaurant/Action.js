@@ -82,7 +82,7 @@ export const getRestaurantById = (reqData) =>{
     }
 }
 
-export const getRestaurantByUserId = (jwt) =>{
+export const getRestaurantByUserId = ({jwt}) =>{
     return async(dispatch) =>{
         dispatch({type: GET_RESTAURANT_BY_USER_ID_REQUEST});
         try {

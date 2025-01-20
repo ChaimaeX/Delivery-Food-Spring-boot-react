@@ -35,6 +35,7 @@ public class FoodServiceImp implements FoodService{
         food.setIntegredients(req.getIngredients());
         food.setSeasonal(req.isSeasonal());
         food.setIsvegetarian(req.isVegetarian());
+        food.setTopMeels(req.isTopMeels());
         food.setCreationDate(new Date(0));
 
         Food saveFood=foodRepos.save(food);
@@ -108,8 +109,8 @@ public class FoodServiceImp implements FoodService{
     @Override
     public List<Food> searchFood(String keyword) {
     
-        // return foodRepos.searchFood(keyword);
-        return null;
+        return foodRepos.searchFood(keyword);
+        // return null;
     }
 
     @Override
@@ -120,6 +121,11 @@ public class FoodServiceImp implements FoodService{
             throw new Exception("food not exist ....");
         }
         return optionalFood.get();
+    }
+
+    public List<Food> findAllFoodsTopMeels() throws Exception{
+        List<Food> allfoodTop = foodRepos.findByTopMeels(true);
+        return allfoodTop;
     }
 
     @Override

@@ -24,6 +24,8 @@ public interface FoodService {
     public Food findFoodById(Long foodId) throws Exception;
 
     public Food updateAvailibityStatus(Long foodId) throws Exception;
+    
+    public List<Food> findAllFoodsTopMeels() throws Exception;
 
 
 }  

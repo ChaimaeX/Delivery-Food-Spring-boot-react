@@ -4,7 +4,8 @@ const initialState = {
     menuItems: [],
     loading: false,
     error: null,
-    search: [],
+    // search: [],
+    TopItem: [],
     message: null,
 };
 
@@ -13,6 +14,7 @@ const MenuItemReducer = (state = initialState, action) => {
         case ActionTypes.CREATE_MENU_ITEM_REQUEST:
         case ActionTypes.GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST:
         case ActionTypes.DELETE_MENU_ITEM_REQUEST:
+        case ActionTypes.GET_TOP_MENU_ITEM_REQUEST:
         case ActionTypes.SEARCH_MENU_ITEM_REQUEST:
         case ActionTypes.UPADTE_MUNU_ITEMS_AVAILABILITY_REQUEST: // Correction du type
             return {
@@ -35,6 +37,13 @@ const MenuItemReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 menuItems: action.payload,
+            };
+        
+        case ActionTypes.GET_TOP_MENU_ITEM_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                TopItem: action.payload,
             };
 
         case ActionTypes.DELETE_MENU_ITEM_SUCCESS:
@@ -61,13 +70,14 @@ const MenuItemReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                search: action.payload,
+                menuItems: action.payload,
             };
 
         case ActionTypes.CREATE_MENU_ITEM_FAILURE:
         case ActionTypes.GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE:
         case ActionTypes.DELETE_MENU_ITEM_FAILURE:
         case ActionTypes.SEARCH_MENU_ITEM_FAILURE:
+        case ActionTypes.GET_TOP_MENU_ITEM_FAILURE:
         case ActionTypes.UPADTE_MUNU_ITEMS_AVAILABILITY_FAILURE: // Correction du type
             return {
                 ...state,

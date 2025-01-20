@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Chip, IconButton } from '@mui/material';
+import { Alert, Card, Chip, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import {useNavigate, useParams} from 'react-router-dom'
@@ -23,6 +23,11 @@ export const RestaurantCard = ({item}) => {
     if(item.open){
        navigate(`/restaurant/${item.address.city}/${item.name}/${item.id                                                                                                                                                                                                                                                    }`)
     }
+    // else{
+    //   <Alert icon={false} severity="success">
+    //          the Restaurant is close
+    //   </Alert>
+    // }
   }
   const [isFavorite, setIsFavorite] = useState(false);
   
@@ -30,7 +35,7 @@ export const RestaurantCard = ({item}) => {
 
   return (
     <Card className='w-[18rem] productCard'>
-      <div className='cursor-pointer relative'>
+      <div className=' relative'>
         <img
           className='w-full h-[10rem] rounded-t-md object-cover'
           src={item.images[2]}
@@ -43,10 +48,12 @@ export const RestaurantCard = ({item}) => {
           label={item.open ? "open" : "closed"}
         />
       </div>
-      <div onClick={handleNavigateToRestaurant} className='p-4 textPart lg:flex w-full justify-between'>
+      <div className='p-4 textPart lg:flex w-full justify-between cursor-pointer'>
+       <div onClick={handleNavigateToRestaurant} >
         <div className='space-y-1'>
           <p className='font-semibold text-lg cursor-pointer'>{item.name}</p>
           <p className='text-gray-500 text-sm'>{item.description}</p>
+        </div>
         </div>
         <div>
           <IconButton onClick={handleAddToFavorite} color="error">

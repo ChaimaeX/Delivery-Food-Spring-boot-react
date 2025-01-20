@@ -50,9 +50,9 @@ public class CartController {
                                                 
     }
 
-    @DeleteMapping("/cart-item/{id}/add")
+    @DeleteMapping("/cart-item/{id}/remove")
     public ResponseEntity<Cart> removeItem(@PathVariable Long id,
-                                                 @RequestHeader("Authorization") String jwt) throws Exception{
+                                            @RequestHeader("Authorization") String jwt) throws Exception{
 
         Cart cart =cartService.removeItemFromCart(id, jwt);
         return new ResponseEntity<>(cart,HttpStatus.OK);

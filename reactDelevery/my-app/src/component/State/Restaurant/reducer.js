@@ -2,7 +2,7 @@ import * as ActionTypes from "./ActionType";
 
 const initialState = {
     restaurants: [],
-    usersRestaurant: null,
+    usersRestaurant: [],
     restaurant: null,
     loading: false,
     error: null,

@@ -6,7 +6,7 @@ import MenuCard from './MenuCard';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRestaurantById, getRestaurantCategoory } from '../State/Restaurant/Action';
-import { getMenuItemsByResturantId } from '../State/Menu/Action';
+import { getMenuItemsByResturantId, searchMenuItem } from '../State/Menu/Action';
 
 const categories=[
     "pizza",
@@ -32,20 +32,6 @@ export const RestaurantDetails = () => {
 
     const {id,city}=useParams();
     const {auth,restaurant,menu} =useSelector(store=>store)
-
-    const handleFilter=(e)=>{
-      setFoodType(e.target.value)
-    }
-    const handleFilterCategory=(e,value)=>{
-        setSelectedCategory(e.target.value)
-        console.log(e.target.value,e.target.name,value)
-
-        
-    }
-    console.log("restaurant:",restaurant);
-    
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const[selectedCategory,setSelectedCategory]=useState("")
 
     useEffect(() => {
@@ -88,8 +74,24 @@ export const RestaurantDetails = () => {
           foodCategory:selectedCategory
           })
       )
-    },[selectedCategory,foodType])
+    },[foodType])
  
+
+    const handleFilter=(e)=>{
+      setFoodType(e.target.value)
+    }
+    const handleFilterCategory=(e,value)=>{
+        setSelectedCategory(e.target.value)
+        dispatch(searchMenuItem({keyword:e.target.value,jwt}))
+
+        
+    }
+    console.log("restaurant:",restaurant);
+    
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+   
+    
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
   return (
@@ -165,7 +167,7 @@ export const RestaurantDetails = () => {
                    <FormControl className='py-10 space-y-5' component={"fiedset"}>
                      <RadioGroup onClick={handleFilterCategory} name='category_type' value={selectedCategory} >
                        {restaurant.categories.map((item)=> <FormControlLabel 
-                       key={item.key}
+                       key={item.id}
                        value={item.name} 
                        control={<Radio/>} 
                        label={item.name}/>)}

@@ -12,8 +12,11 @@ import Chip from "@mui/material/Chip";
 import {
   Button,
   CircularProgress,
+  FormControlLabel,
   Grid,
   IconButton,
+  Radio,
+  RadioGroup,
   TextField,
 } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
@@ -33,6 +36,7 @@ const initialValues = {
   seasonal: false,
   ingredients: [],
   images: [],
+  topMeels:"",
 };
 
 // Validation schema
@@ -202,7 +206,7 @@ const CreateMenuForm = () => {
             </Grid>
             <Grid item xs={12}>
                       
-              <FormControl fullWidth>
+            <FormControl fullWidth>
            <InputLabel id="ingredients-label">Ingredients</InputLabel>
            <Select
              labelId="ingredients-label"
@@ -229,7 +233,7 @@ const CreateMenuForm = () => {
               </MenuItem>
             ))}
           </Select>
-         </FormControl>
+            </FormControl>
 
             </Grid>
             <Grid item xs={12} lg={6}>
@@ -264,6 +268,22 @@ const CreateMenuForm = () => {
                 </Select>
               </FormControl>
             </Grid>
+            <Grid item xs={12} lg={6}>
+                <FormControl component="fieldset">
+                  <RadioGroup
+                    aria-labelledby="radio-group-label"
+                    name="topMeels" // Le nom du champ géré par Formik
+                    value={formik.values.topMeels} // Connecté à Formik
+                    onChange={formik.handleChange} // Mise à jour dynamique via Formik
+                  >
+                    <FormControlLabel
+                      value={true} // Valeur optionnelle
+                      control={<Radio />}
+                      label="Top Menu Item"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
           </Grid>
 
           <Button

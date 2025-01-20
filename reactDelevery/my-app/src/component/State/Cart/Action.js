@@ -94,9 +94,10 @@ export const removeCartItem = ({cartItemId,jwt}) =>{
                 },
             });
             console.log("remove cartItem",response);
-            dispatch({type:REMOVE_CARTITEM_SUCCESS,payload:cartItemId});
+            dispatch({type:REMOVE_CARTITEM_SUCCESS,payload:response.data});
 
         } catch (error) {
+            console.log("error:",error);
             dispatch({type:REMOVE_CARTITEM_FAILURE,payload:error.message});
         }
     }

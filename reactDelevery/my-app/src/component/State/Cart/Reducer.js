@@ -23,6 +23,7 @@ const cartReducer = (state = initialState, action) =>{
 
         case actionTyps.FIND_CART_SUCCESS:
         case actionTyps.CLEARE_CART_SUCCESS:
+        case actionTyps.REMOVE_CARTITEM_SUCCESS:
                     return{
                         ...state,
                         loading:false,

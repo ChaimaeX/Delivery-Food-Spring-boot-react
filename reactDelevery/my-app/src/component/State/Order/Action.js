@@ -30,7 +30,7 @@ export const createOrder = (reqdata) =>{
     }
 }
 
-export const getUsersOrders = (jwt) =>{
+export const getUsersOrders = ({jwt}) =>{
 
     return async (dispatch) =>{
         dispatch({type:GET_USERS_ORDERS_REQUEST});

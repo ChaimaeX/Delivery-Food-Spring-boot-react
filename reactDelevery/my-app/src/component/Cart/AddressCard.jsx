@@ -5,7 +5,11 @@ import { Button, Card } from '@mui/material';
 
 
 
+
 const AddressCard = ({item,showButton}) => {
+
+   
+
   const handleSelectAdress=()=>{
 
   }
@@ -18,8 +22,14 @@ const AddressCard = ({item,showButton}) => {
        <div className='space-y-3 text-gray-500'>
         <h1 className='font-semibold text-lg text-white'>Home</h1>
        <p>
-           Lorem ipsum dolor sit amet consectetur 
-           adipisicing elit. 
+          {item.deliveryAddress.streetAddress}
+       </p>
+       <p>
+          {item.deliveryAddress.country}
+       </p><p>
+          {item.deliveryAddress.city}
+       </p><p>
+          {item.deliveryAddress.stateProvince}
        </p>
        {showButton &&( 
         <Button variant="outlined" fullWidth onClick={()=>handleSelectAdress()}>select</Button>)}

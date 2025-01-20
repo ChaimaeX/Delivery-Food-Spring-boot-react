@@ -1,12 +1,12 @@
 import { Box, Button, Card, Divider, Grid, Modal, TextField } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import CartItem from './CartItem';
 import AddressCard from './AddressCard';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { ErrorMessage, Field, Form } from "formik";
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOrder } from '../State/Order/Action';
+import { createOrder, getUsersOrders } from '../State/Order/Action';
 
 // Vous pouvez activer la validation avec Yup ici si nécessaire
 // import * as Yup from "yup";
@@ -41,9 +41,14 @@ const initialValues = {
 const Cart = () => {
     const handleOpenAddressModal = () => setOpen(true);
     const [open, setOpen] = React.useState(false);
-    const { cart, auth } = useSelector(state => state);
+    const { cart, auth,order } = useSelector(state => state);
     const handleClose = () => setOpen(false);
     const dispatch = useDispatch();
+    const jwt= localStorage.getItem("jwt")
+
+    useEffect(()=>{
+       dispatch(getUsersOrders({jwt}));
+    },[])
 
     const handleSubmit = (values) => {
         
@@ -55,7 +60,7 @@ const Cart = () => {
                     fullName: auth.user?.fullName,
                     streetAddress: values.streetAddress,
                     city: values.state,
-                    postalCode: values.pincode,
+                    stateProvince: values.pincode,
                     country: "Morocco", // Assurez-vous que le nom du pays est correct
                 },
             },
@@ -109,7 +114,7 @@ const Cart = () => {
                     <div>
                         <h1 className='text-center font-semibold text-2xl py-10'>Choose Delivery Address</h1>
                         <div className='flex gap-5 flex-wrap justify-center'>
-                            {[1, 1, 1, 1, 1].map((item, index) => (
+                            {order.orders.map((item, index) => (
                                 <AddressCard key={index} item={item} showButton={true} />
                             ))}
 

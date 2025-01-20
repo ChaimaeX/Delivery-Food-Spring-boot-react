@@ -25,7 +25,7 @@ export const Home = () => {
       {/* Conteneur pour le contenu */}
       <div className="w-[50vw] z-10 text-center">
         <p className="text-2xl lg:text-6xl font-bold z-10 py-5 text-white">
-          Zosh Food
+          <li>Chaimae Food</li>
         </p>
         <p className="z-10 text-gray-300 text-xl lg:text-4xl">
           Taste the Convenience: Food, Fast and Delivered.

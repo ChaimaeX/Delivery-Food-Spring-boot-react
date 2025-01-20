@@ -42,6 +42,8 @@ public class Food {
 
     private boolean available;
 
+    private boolean topMeels;
+
     @ManyToOne
     private Restaurant restaurant;
 

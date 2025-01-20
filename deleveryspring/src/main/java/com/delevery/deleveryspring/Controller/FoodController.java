@@ -37,13 +37,13 @@ public class FoodController {
     @Autowired
     private RestaurantService restaurantService;
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     public ResponseEntity<List<Food>> searchFood(@RequestParam String name,
                                             @RequestHeader("Authorization") String jwt)throws Exception{
 
-        User user=userService.findUserByEmail(jwt);
+        User user=userService.findUserByJwtToken(jwt);
         List<Food> foods = foodService.searchFood(name);
-        return new ResponseEntity<>(foods ,HttpStatus.CREATED);
+        return new ResponseEntity<>(foods ,HttpStatus.OK);
     }
     
     
@@ -63,4 +63,29 @@ public class FoodController {
         return new ResponseEntity<>(foods,HttpStatus.OK);
     }
     
+
+//     @GetMapping("restaurant/{restaurantId}/{foodId}")
+//     public ResponseEntity<Food> getTopFood(@PathVariable Long restaurantId,
+//                              @PathVariable Long foodId,
+//                              @RequestHeader("Authorization") String jwt)throws Exception{
+                               
+//         User user=userService.findUserByJwtToken(jwt);
+
+//         Food food = foodService.findFoodById(foodId);
+
+//         return new ResponseEntity<>(food,HttpStatus.OK);
+//     }
+// }
+    
+    @GetMapping()
+    public ResponseEntity<List<Food>> getTopMeels(@RequestHeader("Authorization") String jwt)throws Exception{
+                               
+        User user=userService.findUserByJwtToken(jwt);
+
+        List<Food> foods = foodService.findAllFoodsTopMeels();
+
+        return new ResponseEntity<>(foods,HttpStatus.OK);
+    }
 }
+
+

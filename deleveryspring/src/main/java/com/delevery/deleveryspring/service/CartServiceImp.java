@@ -49,6 +49,7 @@ public class CartServiceImp implements CartService {
         newCartItem.setFood(food);
         newCartItem.setCart(cart);
         newCartItem.setQuantity(req.getQuantity());
+        newCartItem.setIngredients(req.getIngredients());
         newCartItem.setTotalPrice(req.getQuantity()*food.getPrice());
 
         CartItem saveCartItem=cartItemRepos.save(newCartItem);
@@ -71,7 +72,7 @@ public class CartServiceImp implements CartService {
 
     @Override
     public Cart removeItemFromCart(Long cartItemId, String jwt) throws Exception {
-       User user=userService.findUserByEmail(jwt);
+       User user=userService.findUserByJwtToken(jwt);
        Cart cart=cartRepos.findByCustomerId(user.getId());
 
        Optional<CartItem> cartItemOptional = cartItemRepos.findById(cartItemId);

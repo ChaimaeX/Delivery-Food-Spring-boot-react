@@ -11,6 +11,8 @@ import com.delevery.deleveryspring.Model.Food;
 public interface FoodRepos extends JpaRepository<Food, Long> {
     List<Food> findByRestaurant_Id(Long restaurantId);
 
+    List<Food> findByTopMeels(boolean topMeels);
+
     @Query("SELECT f FROM Food f WHERE f.name LIKE %:keyword% OR f.foodCategory.name LIKE %:keyword%")
     List<Food> searchFood(@Param("keyword") String keyword);
 
