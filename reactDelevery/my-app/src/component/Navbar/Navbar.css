@@ -1,0 +1,151 @@
+.search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+    
+}
+
+.search-Input{
+    outline: none;
+    border-radius: 1.5rem;
+    border: none;
+    background-color: transparent;
+    padding: 1px 3px;
+    font-size: 18px;
+    border-radius:0 60px 0 20px;
+   
+}
+.complet{
+  background-color: white;
+  padding: 10px 8px;
+  max-height: 280px;
+  color: black;
+  overflow-y: auto;
+  font-size: 16px;
+
+}
+
+.complet div{
+    padding: 8px 12px;
+    width: 100%;
+    cursor: default;
+    border-radius:3px;
+
+}
+
+.complet div:hover{
+    background-color: #efefef;
+}
+
+/* Navbar.css */
+
+/* Styles de base existants */
+.logo {
+    font-size: 1.5rem;
+    /* font-weight: bold; */
+    color: white;
+  }
+  
+  .search {
+    display: flex;
+    align-items: center;
+    /* background-color: white; */
+    border-radius: 20px;
+    padding: 0 10px;
+  }
+  
+  .search-Input {
+    border: none;
+    outline: none;
+    padding: 8px;
+    background: transparent;
+    width: 100%;
+  }
+  
+  /* Styles pour mobile */
+  @media (max-width: 768px) {
+    .px-5 {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+  
+    .logo {
+      font-size: 1.2rem;
+      white-space: nowrap;
+    }
+  
+    .search {
+      padding: 0 8px;
+      margin-left: 0.5rem;
+    }
+  
+    .search-Input {
+      padding: 6px;
+      width: 120px; /* Largeur réduite pour mobile */
+    }
+  
+    .flex.justify-between.items-center {
+      flex-wrap: wrap;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+  
+    /* Ajustement pour les icônes */
+    .MuiIconButton-root {
+      padding: 6px !important;
+    }
+  
+    /* Ajustement du menu déroulant de recherche */
+    .relative {
+      position: static;
+    }
+  
+    .absolute {
+      width: calc(100% - 2rem) !important;
+      left: 1rem !important;
+      right: 1rem !important;
+    }
+  }
+  
+  /* Pour les très petits écrans */
+  @media (max-width: 480px) {
+    .logo {
+      font-size: 1rem;
+    }
+  
+    .search-Input {
+      width: 100px;
+    }
+  
+    .lg\\:space-x-10 > * + * {
+      margin-left: 0.5rem !important;
+    }
+  }
+  
+  /* Ajustement pour le badge du panier */
+  .MuiBadge-badge {
+    font-size: 0.6rem !important;
+    height: 16px !important;
+    min-width: 16px !important;
+  }
+  /* Tailles responsives personnalisées */
+@media (max-width: 640px) {
+  .logo {
+    font-size: 1.1rem;
+  }
+  .search-Input {
+    font-size: 0.9rem;
+    padding: 4px 6px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .logo {
+    font-size: 1.3rem;
+  }
+  .search-Input {
+    font-size: 1rem;
+    padding: 6px 8px;
+  }
+}

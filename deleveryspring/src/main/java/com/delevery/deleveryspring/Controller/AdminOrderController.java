@@ -47,4 +47,14 @@ public class AdminOrderController {
         return new ResponseEntity<>(orders,HttpStatus.OK);
                                                 
     }
+
+    @GetMapping("/order/{id}/{orderStatus}")
+    public ResponseEntity<List<Order>> filterOrder(@PathVariable Long id,
+                                             @PathVariable String orderStatus,
+                                             @RequestHeader("Authorization") String jwt) throws Exception{
+        User user=userService.findUserByJwtToken(jwt);
+        List<Order> orders =orderService.getRestaurantsOrder(id, orderStatus);
+        return new ResponseEntity<>(orders,HttpStatus.OK);
+                                                
+    }
 }

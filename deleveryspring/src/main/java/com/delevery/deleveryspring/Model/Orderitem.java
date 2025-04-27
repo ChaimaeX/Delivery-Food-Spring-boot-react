@@ -1,12 +1,14 @@
 package com.delevery.deleveryspring.Model;
 import java.util.List;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,9 @@ public class Orderitem {
 
     private Long totalPrice;
 
-    private List<String> ingredients;
+    // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JoinColumn(name = "order_item_id")
+    private List<String> ingredients;  // Changed to List and proper naming
+
     
 }

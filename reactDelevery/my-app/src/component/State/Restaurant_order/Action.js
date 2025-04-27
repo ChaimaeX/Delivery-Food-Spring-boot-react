@@ -1,5 +1,8 @@
 import { api } from "../../config/api";
 import {
+  FILTER_ORDER_FAILURE,
+  FILTER_ORDER_REQUEST,
+  FILTER_ORDER_SUCCESS,
   GET_RESTAURNTS_ORDER_FAILURE,
   GET_RESTAURNTS_ORDER_REQUEST,
   GET_RESTAURNTS_ORDER_SUCCESS,
@@ -35,6 +38,37 @@ export const updateOrderStatus = ({ orderId, orderStatus, jwt }) => {
 
       dispatch({
         type: UPDATE_ORDER_STATUS_FAILURE,
+        errorMessage: error.response?.data?.message || "Une erreur s'est produite.",
+      });
+    }
+  };
+};
+
+export const filterOrder = ({ restaurantId, orderStatus, jwt }) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: FILTER_ORDER_REQUEST });
+
+      const { data: filterOrder } = await api.get(
+        `api/admin/order/${restaurantId}/${orderStatus}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+
+      console.log("filter orders :", filterOrder);
+
+      dispatch({
+        type: FILTER_ORDER_SUCCESS,
+        payload: filterOrder, 
+      });
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour de la commande :", error);
+
+      dispatch({
+        type: FILTER_ORDER_FAILURE,
         errorMessage: error.response?.data?.message || "Une erreur s'est produite.",
       });
     }

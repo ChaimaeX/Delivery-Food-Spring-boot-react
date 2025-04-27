@@ -1,0 +1,29 @@
+/* Style pour les informations de routage */
+.leaflet-routing-container .leaflet-routing-instructions {
+    color: black; /* Changez la couleur du texte */
+    /* background-color: rgba(255, 255, 255, 0.7);  */
+    /* padding: 10px;  */
+    /* border-radius: 5px; */
+  }
+
+.leaflet-routing-alt td {
+
+    color: black;
+}
+  
+/* Si vous utilisez un fichier CSS global */
+.leaflet-control-geocoder-form input {
+  color: black !important;
+}
+
+/* .leaflet-control-geocoder-icon {
+  filter: brightness(0) !important;
+} */
+
+.leaflet-control-geocoder-form-no-error {
+  color: black !important;
+}
+
+.leaflet-control-geocoder-form input::placeholder {
+  color: #666 !important;
+}

@@ -48,6 +48,7 @@ public class FoodServiceImp implements FoodService{
     public void deleteFood(Long foodId) throws Exception {
         Food food = findFoodById(foodId);
         food.setRestaurant(null);
+        food.setDeleted(true);
         foodRepos.save(food);
        
     }
@@ -107,10 +108,10 @@ public class FoodServiceImp implements FoodService{
     }
             
     @Override
-    public List<Food> searchFood(String keyword) {
+    public List<Food> searchFood(String keyword , Long restaurantId) {
     
-        return foodRepos.searchFood(keyword);
-        // return null;
+        return foodRepos.searchFoodByRestaurant(keyword,restaurantId);
+       
     }
 
     @Override
@@ -123,8 +124,9 @@ public class FoodServiceImp implements FoodService{
         return optionalFood.get();
     }
 
-    public List<Food> findAllFoodsTopMeels() throws Exception{
-        List<Food> allfoodTop = foodRepos.findByTopMeels(true);
+    @Override
+    public List<Food> findTopMeels() throws Exception{
+        List<Food> allfoodTop = foodRepos.findByTopMeelsAndDeletedFalse(true);
         return allfoodTop;
     }
 
@@ -134,6 +136,15 @@ public class FoodServiceImp implements FoodService{
        food.setAvailable(!food.isAvailable());
        
        return foodRepos.save(food);
+    }
+
+    @Override
+    public List<Food> findAllFood() throws Exception {
+        return foodRepos.findAll()
+        .stream()
+        .filter(food -> food.getRestaurant() != null)
+        .collect(Collectors.toList());
+       
     }
 
     

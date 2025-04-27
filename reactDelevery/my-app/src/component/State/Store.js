@@ -8,6 +8,8 @@ import cartReducer from "./Cart/Reducer";
 import { orderReducer } from "./Order/reducer";
 import restaurantsOrderReducer from "./Restaurant_order/Reducer";
 import { ingredientReducer } from "./ingredients/Reducer";
+import { deliveryReducer } from "./Delivery/Reducer";
+import adminReducer from "./admin/Reducer";
 
 
 // Combinaison des reducers
@@ -19,6 +21,8 @@ const rootReducer = combineReducers({
   order:orderReducer,
   restaurantOrder:restaurantsOrderReducer,
   ingredients:ingredientReducer,
+  delivery:deliveryReducer,
+  admin:adminReducer,
   
 });
 

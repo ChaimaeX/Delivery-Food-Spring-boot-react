@@ -2,6 +2,9 @@ package com.delevery.deleveryspring.Dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -18,4 +21,9 @@ public class RestaurantDto {
     private String description;
 
     private Long id;
+
+    @Column(nullable = false)
+    private boolean open;
+
+   
 }

@@ -38,6 +38,7 @@ public class Restaurant {
     private String name;
     private String description;
     private String cuisineType;
+    // private String id_Stripe;
      
     @OneToOne 
     private Address address;
@@ -62,6 +63,11 @@ public class Restaurant {
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant" ,cascade = CascadeType.ALL)
     private List<Food> foods = new ArrayList<>();
+
+    public Restaurant orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
+    }
 
     
     

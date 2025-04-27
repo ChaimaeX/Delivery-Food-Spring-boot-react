@@ -12,14 +12,22 @@ export const findCart = (token) =>{
                 },
             });
             console.log("myCart: ",response.data);
+            if (response) {
+                localStorage.setItem('cart', JSON.stringify(response.data));
+            }
             
             dispatch({type:FIND_CART_SUCCESS,payload:response.data});
-
         } catch (error) {
-            console.log("error",error);
-            dispatch({type:FIND_CART_FAILURE,payload:error})
-        }
-    }
+            // Si l'API échoue, essayer de récupérer depuis le localStorage
+            const localCart = localStorage.getItem('cart');
+            if (localCart) {
+              dispatch({ type:'FIND_CART_SUCCESS', payload: JSON.parse(localCart) });
+            } else {
+              dispatch({ type:'FIND_CART_FAILURE', payload: error.message });
+            }
+          }
+        };
+    
 }
 
 export const addItemToCart = (reqData) => {

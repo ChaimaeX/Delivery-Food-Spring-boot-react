@@ -1,5 +1,8 @@
 package com.delevery.deleveryspring.Controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +15,10 @@ import com.delevery.deleveryspring.Model.Restaurant;
 import com.delevery.deleveryspring.Model.User;
 import com.delevery.deleveryspring.Response.MessageResponse;
 import com.delevery.deleveryspring.request.CreateRestaurantRequest;
+import com.delevery.deleveryspring.service.PaymentService;
 import com.delevery.deleveryspring.service.RestaurantService;
 import com.delevery.deleveryspring.service.UserService;
+import com.stripe.exception.StripeException;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,19 +36,37 @@ public class AdminRestaurantContoller {
     @Autowired
     private UserService userService;
 
-    // Create a new restaurant
-    @PostMapping()
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody CreateRestaurantRequest req,
-                                                        @RequestHeader("Authorization") String jwt) throws Exception {
+    // @Autowired
+    // private PaymentService paymentService;
+
+   
+   @PostMapping()
+   public ResponseEntity<Restaurant> createRestaurant(
+        @RequestBody CreateRestaurantRequest req,
+        @RequestHeader("Authorization") String jwt) throws Exception{
+
+    try {
         System.out.println("Corps de la requête reçu : " + req);
+
+        // Vérifier l'utilisateur via le JWT
         User user = userService.findUserByJwtToken(jwt);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); // Return 401 if the JWT is invalid
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); // Retourne 401 si le JWT est invalide
         }
-        Restaurant restaurant = restaurantService.createRestaurant(req, user);
-        return new ResponseEntity<>(restaurant, HttpStatus.CREATED);
-    }
 
+        // Créer le restaurant
+        Restaurant restaurant = restaurantService.createRestaurant(req, user);
+
+        
+        return new ResponseEntity<>(restaurant, HttpStatus.CREATED);
+
+       } catch (Exception e) {
+         
+          throw new Exception("creer restaurant erreur ", e);
+       
+       }
+    }
+    
     // Update an existing restaurant
     @PutMapping("/{id}/")
     public ResponseEntity<Restaurant> updateRestaurant(@RequestBody CreateRestaurantRequest req,

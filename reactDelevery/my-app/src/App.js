@@ -13,6 +13,7 @@ function App() {
   const jwt = localStorage.getItem("jwt");
   const auth = useSelector(store => store.auth);
 
+
   useEffect(() => {
     if (jwt) {  // Vérifiez d'abord si le JWT est dans localStorage
       dispatch(getUser(auth.jwt||jwt));  // Déclencher l'action pour récupérer l'utilisateur
@@ -20,10 +21,11 @@ function App() {
   }, [auth.jwt, dispatch]);
 
   useEffect(()=>{
-    dispatch(getRestaurantByUserId(auth.jwt || jwt));
+    console.log("getRestaurantByUserId",jwt);
+    dispatch(getRestaurantByUserId(auth.jwt||jwt));
     
    
-  },[auth.user])
+  },[auth.jwt,dispatch])
   return (
     <div>
       <ThemeProvider theme={darkTheme}>

@@ -1,5 +1,6 @@
 package com.delevery.deleveryspring.Model;
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,5 +18,11 @@ public class Address {
     private String city;
     private String stateProvince;
     private String country;
+    private Double latitude;
+    private Double longitude;
+    private boolean deleted = false;
+
+    
+
     
 }

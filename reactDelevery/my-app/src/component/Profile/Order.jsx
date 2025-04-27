@@ -10,19 +10,20 @@ const Order = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const jwt = localStorage.getItem("jwt");
+  
 
   useEffect(()=>{
     const order = async  ()=> {
-      await dispatch(getUsersOrders(jwt));
+      await dispatch(getUsersOrders({jwt}));
     }
     order()
   },[auth,jwt])
   
   return (
-    <div className='flex justify-center items-center min-h-screen'> {/* Centre horizontalement et verticalement */}
-      <div className='container flex justify-center items-center flex-col'>
+    <div className='flex justify-center items-center min-h-screen'>
+      <div className='w-full px-4 sm:px-0'> {/* Ajout de padding horizontal sur mobile */}
         <h1 className='text-xl text-center p-7 font-semibold'>My Orders</h1>
-        <div className='space-y-5 w-full lg:w-1/2'>
+        <div className='space-y-5 w-full sm:w-1/2 mx-auto'> 
           {
             order.orders.map((order) =>order.items.map((item=> <OrderCard order={order} item={item} />)))
            

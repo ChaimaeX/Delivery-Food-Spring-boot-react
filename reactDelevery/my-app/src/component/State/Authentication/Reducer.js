@@ -10,17 +10,30 @@ import { ADD_TO_FAVORITE_FAILURE,
          GET_USER_REQUEST,
          GET_USER_SUCCESS,
          GET_USER_FAILURE,
-         LOGOUT} 
+         LOGOUT,
+         LOGIN_SUCCESS,
+         FORGOT_PASSWORD_REQUEST,
+         GET_OTP_REQUEST,
+         UPDATE_PASSWORD_SUCCESS,
+         GET_OTP_SUCCESS,
+         FORGOT_PASSWORD_SUCCESS,
+         FORGOT_PASSWORD_FAILURE,
+         GET_OTP_FAILURE,
+         UPDATE_PASSWORD_FAILURE,
+         UPDATE_PASSWORD_REQUEST} 
           from "./ActionType";
           
 const initialState={
     user:null,
     isLoading:false,
+    loading:false,
     jwt:null,
     favorites:[],
-    success:null,
-
-
+    email: null,
+    otpVerified: false,
+    passwordReset: false,
+    message: null,
+   
 }
 
 export const authReducer=(state=initialState,action)=>{
@@ -29,21 +42,48 @@ export const authReducer=(state=initialState,action)=>{
         case REGISTER_REQUEST:
         case LOGIN_REQUEST:
         case GET_USER_REQUEST:
-        case ADD_TO_FAVORITE_REQUEST:
-            
+        case ADD_TO_FAVORITE_REQUEST: 
            return{...state,
-                  isLoading:true,
+                  loading:true,
                   error:null,
-                  success:null};
-        
+                  success:null,
+                  message:null
+                };
+                
+        case GET_OTP_REQUEST:          
+            return{...state,
+                  loading:true,
+                  error:null,
+                  success:null,
+                  messages:null
+                };
+        case FORGOT_PASSWORD_REQUEST:        
+            return{...state,
+                loading:true,
+                error:null,
+                success:null,
+                messages:null
+             };
+
+        case UPDATE_PASSWORD_REQUEST:          
+             return{...state,
+                   loading:true,
+                   error:null,
+                   success:null,
+               
+                 };
+
         case REGISTER_SUCCESS:
-           
-        case LOGIN_REQUEST:
+            return{...state,
+                loading:false,
+                message:action.payload
+        };
             
+        case LOGIN_SUCCESS:  
            return{...state,
-               isLoading:false,
+                loading:false,
                jwt:action.payload,
-               success:"Register Success"};
+               message:"Register Success"};
         
         case GET_USER_SUCCESS:
             
@@ -52,6 +92,31 @@ export const authReducer=(state=initialState,action)=>{
                    user:action.payload,
                    favorites:action.payload.favorites
                 };
+       
+        // Succès de l'envoi d'email
+        case FORGOT_PASSWORD_SUCCESS:
+          return {
+            ...state,
+            loading: false,
+            success: true,
+            email: action.payload.email,
+            message: "Enter your code"
+        };
+
+        case GET_OTP_SUCCESS:
+          return {
+            ...state,
+            loading: false,
+            otpVerified: true,
+            message: action.payload
+         };
+
+        case UPDATE_PASSWORD_SUCCESS:
+          return {
+             ...state, 
+             passwordReset: true,
+             message: "your password has been changed"
+        };
     
         case ADD_TO_FAVORITE_SUCCESS:
             return{
@@ -70,10 +135,14 @@ export const authReducer=(state=initialState,action)=>{
             case REGISTER_FAILURE:
             case LOGIN_FAILURE:
             case GET_USER_FAILURE:
+            case FORGOT_PASSWORD_FAILURE:
+            case GET_OTP_FAILURE:
+            case UPDATE_PASSWORD_FAILURE:
             case ADD_TO_FAVORITE_FAILURE:
                     
                    return{...state,
                           isLoading:false,
+                          loading:false,
                           error:action.payload,
                           success:null};
                 

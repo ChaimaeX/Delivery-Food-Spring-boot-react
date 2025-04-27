@@ -18,13 +18,16 @@ import com.delevery.deleveryspring.service.FoodService;
 import com.delevery.deleveryspring.service.RestaurantService;
 import com.delevery.deleveryspring.service.UserService;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @RestController
+@CrossOrigin(origins = "https://67a7e94de489e9518c3f5c10--nimble-bonbon-b7a680.netlify.app")
 @RequestMapping("/api/admin/food")
 public class AdminFoodController {
 

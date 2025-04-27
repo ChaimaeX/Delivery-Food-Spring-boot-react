@@ -1,6 +1,7 @@
 package com.delevery.deleveryspring.Model;
 
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,10 +42,15 @@ public class Order {
     @OneToMany
     private List<Orderitem> items;
 
-    // private Payment Payment
-
     private int totalItem;
 
     private Long totalPrice;
+
+    // When creating an order, it's in false state - no delivery person has accepted it yet
+    private Boolean accepted = false;
+
+    // Many orders can be assigned to one delivery person
+    @ManyToOne
+    private User deliveryPerson; 
     
 }

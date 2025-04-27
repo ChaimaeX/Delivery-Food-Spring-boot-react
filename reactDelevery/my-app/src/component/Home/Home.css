@@ -1,5 +1,5 @@
 .banner{
-    background-image: url("https://media.istockphoto.com/id/1143191120/photo/traditional-moroccan-tajine-of-chicken-with-dried-fruits-and-spices.webp?s=1024x1024&w=is&k=20&c=d9F22eYGbwaT53ZFypdVA28aGWs78UflEVAATTuLgy8=");
+    background-image: url("https://media.istockphoto.com/id/1318018652/photo/table-with-various-arabic-food-served-top-view.webp?s=1024x1024&w=is&k=20&c=A11D4wHGrzrItpY017J30GjwLiQPa9hIBlPFFbPJOek=");
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
@@ -13,3 +13,11 @@
     opacity: 0.4;
 
 }
+
+/* Couvre la moitié de la hauteur sur mobile */
+@media (max-width: 768px) {
+    .banner {
+        height: 60vh; /* Réduit la hauteur à la moitié de la page sur mobile */
+    }
+}
+

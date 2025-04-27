@@ -1,0 +1,17 @@
+/* Ajuste le padding du body pour éviter que le contenu soit caché */
+body {
+    transition: margin-left 0.3s;
+    margin-left: 20px; /* Pour la version desktop réduite */
+  }
+  
+  @media (max-width: 768px) {
+    body {
+      margin-left: 0;
+    }
+  }
+  
+  /* Améliore l'apparence des tooltips */
+  .MuiTooltip-tooltip {
+    font-size: 0.875rem;
+    background-color: #1E293B;
+  }

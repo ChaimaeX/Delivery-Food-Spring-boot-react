@@ -47,5 +47,23 @@ public class CategoryServiceImp implements CategoryService {
 
        
     }
+
+    @Override
+    public Void DeleteCategoryById(Long id) throws Exception {
+        
+        // Optional<Category> optionalCategory = categoryRepos.findById(id);
+
+        // if (optionalCategory.isEmpty()) {
+        //     throw new Exception("category not found");
+
+        // }
+
+        // categoryRepos.DeleteCategoryById(id);
+        
+        throw new UnsupportedOperationException("Unimplemented method 'DeleteCategoryById'");
+    }
+
+    
+    
     
 }

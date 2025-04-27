@@ -9,5 +9,7 @@ import com.delevery.deleveryspring.Model.Category;
 public interface CategoryRepos extends JpaRepository<Category,Long> {
 
     public List<Category> findByRestaurantId(Long id);
+
+
     
 }

@@ -19,13 +19,15 @@ public interface FoodService {
                                           boolean isSeasonal,
                                           String foodCategory);
 
-    public List<Food> searchFood(String keyword);
+    public List<Food> searchFood(String keyword , Long restaurantId);
 
     public Food findFoodById(Long foodId) throws Exception;
 
     public Food updateAvailibityStatus(Long foodId) throws Exception;
     
-    public List<Food> findAllFoodsTopMeels() throws Exception;
+    public List<Food> findTopMeels() throws Exception;
+
+    public List<Food> findAllFood() throws Exception;
 
 
 }  

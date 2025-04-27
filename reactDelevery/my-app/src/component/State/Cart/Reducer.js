@@ -28,7 +28,7 @@ const cartReducer = (state = initialState, action) =>{
                         ...state,
                         loading:false,
                         cart: action.payload,
-                        cartItems:action.payload.item,
+                        cartItems:action.payload.item || [],
         
                     };
         

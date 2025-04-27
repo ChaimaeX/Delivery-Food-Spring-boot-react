@@ -28,10 +28,14 @@ public class CartItem {
 
     private int quantity;
 
-    private List<String> ingredients ;
+    // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JoinColumn(name = "cart_item_id")
+    private List<String> ingredients;  // Changed to List and proper naming
 
     private Long totalPrice;
-
+    
     @ManyToOne
-    private User customer;  // Ajoutez cette ligne
+    @JoinColumn(name = "customer_id")
+    private User customer;  // Not customerId
+    
 }

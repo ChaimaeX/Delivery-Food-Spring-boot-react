@@ -4,31 +4,37 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { removeCartItem, updateCartItem } from '../State/Cart/Action';
+import { findCart, removeCartItem, updateCartItem } from '../State/Cart/Action';
 
 const CartItem = ({ item }) => {
   const { auth, cart } = useSelector((store) => store);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const jwt = localStorage.getItem('jwt');
-  const { loading } = cart; // Récupère l'état de chargement du panier
-  
+  const { loading } = cart;
+
   const handleUpdateCartItem = async (value) => {
     if (value === -1 && item.quantity <= 1) {
-      handleRemoveCartItem();
+      await handleRemoveCartItem();
     } else {
       const data = { cartItemId: item.id, quantity: item.quantity + value };
-       dispatch(updateCartItem({ data, jwt }));
+      await dispatch(updateCartItem({ data, jwt }));
+      await dispatch(findCart(jwt)); // Rafraîchir après modification
     }
   };
 
-  const handleRemoveCartItem = () => {
-    dispatch(removeCartItem({ cartItemId: item.id, jwt: auth.jwt || jwt }));
-  };
+  const handleRemoveCartItem = async () => {
+    try {
+      await dispatch(removeCartItem({ cartItemId: item.id, jwt: auth.jwt || jwt }));
+      await dispatch(findCart(jwt)); // Rafraîchir après suppression
+    } catch (error) {
+      console.error("Erreur lors de la suppression:", error);
+    }
+  }
 
   return (
     <div className="px-5">
-      <div className="lg:flex items-center lg:space-x-5">
+      <div className="flex items-center space-x-5">
         {/* Image de l'élément du panier */}
         <img
           className="w-[5rem] h-[5rem] object-cover"

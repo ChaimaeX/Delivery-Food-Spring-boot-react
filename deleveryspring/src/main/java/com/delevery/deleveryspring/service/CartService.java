@@ -2,6 +2,7 @@ package com.delevery.deleveryspring.service;
 
 import com.delevery.deleveryspring.Model.Cart;
 import com.delevery.deleveryspring.Model.CartItem;
+import com.delevery.deleveryspring.Model.User;
 import com.delevery.deleveryspring.request.AddCartItemRequest;
 
 public interface CartService {
@@ -16,8 +17,8 @@ public interface CartService {
 
     public Cart findCartById(Long id) throws Exception;
 
-    public Cart findCartByUserId(Long UserId) throws Exception;
+    public Cart findCartByUserId(Long userId ,String jwt) throws Exception ;
 
-    public Cart cleanCart(Long UserId) throws Exception;
+    public Cart cleanCart(User user) throws Exception;
 
 }

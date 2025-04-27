@@ -31,6 +31,9 @@ public class RestaurantServiceImp implements RestaurantService {
     @Autowired
     private UserRepos userRepos;
 
+    @Autowired
+    private PaymentService paymentService;
+
 
 
     @Override
@@ -44,12 +47,13 @@ public class RestaurantServiceImp implements RestaurantService {
         restaurant.setDescription(req.getDescription());
         restaurant.setImages(req.getImages());
         restaurant.setName(req.getName());
+        // restaurant.setId_Stripe("YWNjdF8xUjJYVnNSaUFrUDdMemZl");
         restaurant.setOpeninHours(req.getOpeningHours());
         restaurant.setRegistrationDate(LocalDateTime.now());
         restaurant.setOwner(user);
 
 
-
+        
         return restaurantRepos.save(restaurant);
        
     }
@@ -120,7 +124,7 @@ public class RestaurantServiceImp implements RestaurantService {
     }
 
     @Override
-    public RestaurantDto addToFavorites(Long restaurantId, User user) throws Exception {
+    public RestaurantDto addToFavorites(Long restaurantId,boolean status, User user) throws Exception {
         // TODO Auto-generated method stub
         Restaurant restaurant = findRestaurantById(restaurantId);
         RestaurantDto dto = new RestaurantDto();
@@ -128,6 +132,8 @@ public class RestaurantServiceImp implements RestaurantService {
         dto.setImages(restaurant.getImages());
         dto.setTitle(restaurant.getName());
         dto.setId(restaurantId);
+        dto.setOpen(status);
+        
 
         boolean isFavorited = false;
         List<RestaurantDto> favorites = user.getFavorites();

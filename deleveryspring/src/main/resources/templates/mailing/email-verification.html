@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Verification Email</title>
+    
+    <style>
+        /* CSS simplifié */
+        body {
+            font-family: 'Lato', sans-serif;
+            background: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+        }
+        .btn-primary {
+            background: #30e3ca;
+            color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .footer {
+            border-top: 1px solid rgba(0, 0, 0, .05);
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <!-- En-tête -->
+        <div style="padding: 20px; text-align: center;">
+            <h1 th:text="${'Bonjour ' + (fullName != null ? fullName : '') + '!'}">Bonjour !</h1>
+        </div>
+
+        <!-- Contenu principal -->
+        <div style="padding: 0 20px 20px 20px; text-align: center;">
+            <h2>Finalisez la création de votre compte</h2>
+            <p>Nous sommes ravis de vous accueillir. Pour commencer, veuillez confirmer votre compte en cliquant sur le bouton ci-dessous.</p>
+            
+            <p style="margin: 30px 0;">
+                <a th:href="${verificationURL}" class="btn-primary">Confirmer le compte</a>
+            </p>
+
+            <p>Si vous rencontrez des problèmes avec le bouton ci-dessus, copiez et collez le lien suivant dans votre navigateur :</p>
+            <p th:text="${verificationURL}" style="word-break: break-all;"></p>
+        </div>
+
+        <!-- Pied de page -->
+        <div class="footer">
+            <p>© 2023 Delevery Food. Tous droits réservés.</p>
+            <p>
+                <a href="https://votresite.com">Site web</a> | 
+                <a href="mailto:aharakchaimae1212@gmail.com">Contact</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

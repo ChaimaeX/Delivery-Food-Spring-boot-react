@@ -1,5 +1,25 @@
 import {api} from "../../config/api"
-import { CREATE_MENU_ITEM_FAILURE, CREATE_MENU_ITEM_REQUEST, CREATE_MENU_ITEM_SUCCESS, DELETE_MENU_ITEM_FAILURE, DELETE_MENU_ITEM_REQUEST, DELETE_MENU_ITEM_SUCCESS, GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE, GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST, GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS, GET_TOP_MENU_ITEM_FAILURE, GET_TOP_MENU_ITEM_REQUEST, GET_TOP_MENU_ITEM_SUCCESS, SEARCH_MENU_ITEM_FAILURE, SEARCH_MENU_ITEM_REQUEST, SEARCH_MENU_ITEM_SUCCESS, UPADTE_MUNU_ITEMS_AVAILABILITY_FAILURE, UPADTE_MUNU_ITEMS_AVAILABILITY_REQUEST, UPADTE_MUNU_ITEMS_AVAILABILITY_SUCCESS } from "./ActionType";
+import { CREATE_MENU_ITEM_FAILURE, 
+    CREATE_MENU_ITEM_REQUEST, 
+    CREATE_MENU_ITEM_SUCCESS, 
+    DELETE_MENU_ITEM_FAILURE, 
+    DELETE_MENU_ITEM_REQUEST, 
+    DELETE_MENU_ITEM_SUCCESS, 
+    GET_ALL_MENU_ITEM_FAILURE, 
+    GET_ALL_MENU_ITEM_REQUEST, 
+    GET_ALL_MENU_ITEM_SUCCESS, 
+    GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE, 
+    GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST, 
+    GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS, 
+    GET_TOP_MENU_ITEM_FAILURE, 
+    GET_TOP_MENU_ITEM_REQUEST, 
+    GET_TOP_MENU_ITEM_SUCCESS, 
+    SEARCH_MENU_ITEM_FAILURE, 
+    SEARCH_MENU_ITEM_REQUEST, 
+    SEARCH_MENU_ITEM_SUCCESS, 
+    UPDATE_MUNU_ITEMS_AVAILABILITY_FAILURE, 
+    UPDATE_MUNU_ITEMS_AVAILABILITY_REQUEST, 
+    UPDATE_MUNU_ITEMS_AVAILABILITY_SUCCESS } from "./ActionType";
 
  export const createMenuItem =({ menu,jwt}) =>{
     return async (dispatch) =>{
@@ -46,11 +66,11 @@ import { CREATE_MENU_ITEM_FAILURE, CREATE_MENU_ITEM_REQUEST, CREATE_MENU_ITEM_SU
 };
 
 
- export const searchMenuItem =({ keyword,jwt}) =>{
+ export const searchMenuItem =({ keyword,restaurantId,jwt}) =>{
     return async (dispatch) =>{
         dispatch({type:SEARCH_MENU_ITEM_REQUEST});
         try {
-            const { data } = await api.get(`api/food/search?name=${keyword}`,{
+            const { data } = await api.get(`api/food/search?name=${keyword}&restaurantId=${restaurantId}`,{
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
@@ -66,22 +86,45 @@ import { CREATE_MENU_ITEM_FAILURE, CREATE_MENU_ITEM_REQUEST, CREATE_MENU_ITEM_SU
     }
  }
 
- export const getAllTopMenuItem =({jwt}) =>{
+ export const getAllTopMenuItem =() =>{
     return async (dispatch) =>{
         dispatch({type:GET_TOP_MENU_ITEM_REQUEST});
         try {
-            const { data } = await api.get(`api/food`,{
-                headers: {
-                    Authorization: `Bearer ${jwt}`,
-                    "Content-Type": "application/json"
-                },
-            });
+            const { data } = await api.get(`api/food`
+            // ,{
+            //     headers: {
+            //         Authorization: `Bearer ${jwt}`,
+            //         "Content-Type": "application/json"
+            //     },
+            // }
+        );
         console.log("data Top Meels-----------",data);
         dispatch({type:GET_TOP_MENU_ITEM_SUCCESS,payload:data})
         
         } catch (error) {
             console.log("catch error ",error);
             dispatch({type:GET_TOP_MENU_ITEM_FAILURE,payload:error})
+            
+        }
+    }
+ }
+
+ export const getAllMenus =({jwt}) =>{
+    return async (dispatch) =>{
+        dispatch({type:GET_ALL_MENU_ITEM_REQUEST});
+        try {
+            const { data } = await api.get(`api/food/foods`,{
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                    "Content-Type": "application/json"
+                },
+            });
+        console.log("data Meels-----------",data);
+        dispatch({type:GET_ALL_MENU_ITEM_SUCCESS,payload:data})
+        
+        } catch (error) {
+            console.log("catch error ",error);
+            dispatch({type:GET_ALL_MENU_ITEM_FAILURE,payload:error})
             
         }
     }
@@ -109,19 +152,19 @@ import { CREATE_MENU_ITEM_FAILURE, CREATE_MENU_ITEM_REQUEST, CREATE_MENU_ITEM_SU
 
 export const updateMenuItemsAvailability =({ foodId,jwt}) =>{
     return async (dispatch) =>{
-        dispatch({type:UPADTE_MUNU_ITEMS_AVAILABILITY_REQUEST});
+        dispatch({type:UPDATE_MUNU_ITEMS_AVAILABILITY_REQUEST});
         try {
-            const { data } = await api.put(`api/admin/food/${foodId}`,{},{
+            const { data } = await api.put(`api/admin/food/${foodId}/`,{},{
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
             });
         console.log("update menuItems Availability ",data);
-        dispatch({type:UPADTE_MUNU_ITEMS_AVAILABILITY_SUCCESS,payload:data})
+        dispatch({type:UPDATE_MUNU_ITEMS_AVAILABILITY_SUCCESS,payload:data})
         
         } catch (error) {
             console.log("catch error ",error);
-            dispatch({type:UPADTE_MUNU_ITEMS_AVAILABILITY_FAILURE,payload:error})
+            dispatch({type:UPDATE_MUNU_ITEMS_AVAILABILITY_FAILURE,payload:error})
             
         }
     }

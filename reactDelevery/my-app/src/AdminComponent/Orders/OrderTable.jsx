@@ -14,6 +14,7 @@ import {
   Button,
   Menu,
   MenuItem,
+  Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,25 +27,15 @@ const orderStatusOptions = [
   { label: "Delivered", value: "DELIVERED" },
 ];
 
-const OrderTable = () => {
+const OrderTable = ({orders,loading}) => {
   const jwt = localStorage.getItem("jwt");
-  const { restaurant, restaurantOrder } = useSelector((store) => store);
   const dispatch = useDispatch();
-
-  // State for menu handling
+  const { restaurant } = useSelector((store) => store);
+  
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [currentOrderId, setCurrentOrderId] = useState(null);
-
-  useEffect(() => {
-    // if (restaurant?.usersRestaurant?.id && jwt) {
-      dispatch(
-            fetchRestaurantOrder(
-            {jwt,
-             restaurantId:restaurant.usersRestaurant?.id,
-            }
-      ))
-    // }
-  }, []);
+  const [updatingOrderId, setUpdatingOrderId] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleMenuClick = (event, orderId) => {
     setMenuAnchor(event.currentTarget);
@@ -55,13 +46,44 @@ const OrderTable = () => {
     setMenuAnchor(null);
     setCurrentOrderId(null);
   };
+  
 
-  const handleUpdateOrder = (orderStatus) => {
-    if (currentOrderId) {
-      dispatch(updateOrderStatus({ orderId: currentOrderId, orderStatus, jwt }));
+  const handleUpdateOrder = async (orderStatus) => {
+ 
+    if (!currentOrderId) return;
+    
+    try {
+      setUpdatingOrderId(currentOrderId);
+      setError(null);
+      
+      await dispatch(updateOrderStatus({ 
+        orderId: currentOrderId, 
+        orderStatus, 
+        jwt 
+      }));
+      
+      // Rafraîchir les commandes après la mise à jour
+      await dispatch(fetchRestaurantOrder({
+        jwt,
+        restaurantId: restaurant.usersRestaurant?.id
+      }));
+      
+    } catch (err) {
+      console.error("Update failed:", err);
+      setError("Failed to update order status");
+    } finally {
+      setUpdatingOrderId(null);
+      handleMenuClose();
     }
-    handleMenuClose();
   };
+
+  if (!orders?.length) {
+    return (
+      <Box p={3} textAlign="center">
+        <Typography variant="h6">Aucune commande trouvée</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -82,7 +104,7 @@ const OrderTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {restaurantOrder?.orders?.map((item) => (
+              {orders?.map((item) => (
                 <TableRow
                   key={item.id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -101,7 +123,7 @@ const OrderTable = () => {
                   <TableCell align="right">
                     {item.customer?.fullName || "Unknown"}
                   </TableCell>
-                  <TableCell align="right">{item.totalAmount || "0"}</TableCell>
+                  <TableCell align="right">{item.totalPrice || "0"} DH</TableCell>
                   <TableCell align="right">
                     {item.items?.map((orderItem) => (
                       <p key={orderItem.food?.id || Math.random()}>
@@ -111,9 +133,9 @@ const OrderTable = () => {
                   </TableCell>
                   <TableCell align="right">
                     {item.items?.map((orderItem) => (
-                      <div key={orderItem.food?.id || Math.random()}>
+                      <div  key={orderItem.food?.id || Math.random()}>
                         {orderItem.food?.integredients?.map((ingredient) => (
-                          <Chip key={ingredient.id} label={ingredient.name} />
+                          <Chip  key={ingredient.id} label={ingredient.name} />
                         ))}
                       </div>
                     ))}
@@ -130,9 +152,8 @@ const OrderTable = () => {
                       {item.orderStatus || "Update"}
                     </Button>
                     <Menu
-                      id="basic-menu"
                       anchorEl={menuAnchor}
-                      open={Boolean(menuAnchor)}
+                      open={currentOrderId === item.id && Boolean(menuAnchor)}
                       onClose={handleMenuClose}
                       MenuListProps={{
                         'aria-labelledby': 'basic-button',
@@ -142,6 +163,7 @@ const OrderTable = () => {
                         <MenuItem
                           key={status.value}
                           onClick={() => handleUpdateOrder(status.value)}
+                          disabled={item.orderStatus === status.value || updatingOrderId === item.id}
                         >
                           {status.label}
                         </MenuItem>

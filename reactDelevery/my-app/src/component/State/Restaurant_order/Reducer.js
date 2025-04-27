@@ -4,6 +4,9 @@ import {
   } from "../Restaurant/ActionType";
   
   import { 
+    FILTER_ORDER_FAILURE,
+    FILTER_ORDER_REQUEST,
+    FILTER_ORDER_SUCCESS,
     GET_RESTAURNTS_ORDER_FAILURE, 
     GET_RESTAURNTS_ORDER_REQUEST, 
     GET_RESTAURNTS_ORDER_SUCCESS, 
@@ -18,6 +21,7 @@ import {
   
   const restaurantsOrderReducer = (state = initialState, action) => {
     switch (action.type) {
+      case FILTER_ORDER_REQUEST:
       case GET_RESTAURNTS_ORDER_REQUEST:
       case UPDATE_RESTAURANT_STATUS_REQUEST:
         return {
@@ -26,12 +30,19 @@ import {
           error: null
         };
   
-      case GET_RESTAURNTS_ORDER_SUCCESS:
+      case FILTER_ORDER_SUCCESS:
         return {
           ...state,
           loading: false,
           orders: action.payload
         };
+
+      case GET_RESTAURNTS_ORDER_SUCCESS:
+          return {
+            ...state,
+            loading: false,
+            orders: action.payload
+      };
   
       case UPDATE_RESTAURANT_STATUS_SUCCESS:
         const updatedOrders = state.orders.map((order) =>
@@ -45,6 +56,7 @@ import {
   
       case GET_RESTAURNTS_ORDER_FAILURE:
       case UPDATE_ORDER_STATUS_FAILURE:
+      case FILTER_ORDER_FAILURE:
         return {
           ...state,
           loading: false,

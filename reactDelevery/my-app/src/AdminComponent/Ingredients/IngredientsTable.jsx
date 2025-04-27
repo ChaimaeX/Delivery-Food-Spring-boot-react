@@ -42,7 +42,7 @@ const IngredientsTable = () => {
             
         };
         fetchIngredients();
-    }, [dispatch, jwt, restaurant.usersRestaurant.id]);
+      }, [dispatch, jwt, restaurant.usersRestaurant.id]);
     
 
       const handleUpdateStock=(id)=>{

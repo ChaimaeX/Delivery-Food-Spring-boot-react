@@ -8,4 +8,5 @@ import lombok.Data;
 public class OrderRequest {
     private Long restaurantId;
     private Address delivery;
+    // private Long TotalAmount;
 }

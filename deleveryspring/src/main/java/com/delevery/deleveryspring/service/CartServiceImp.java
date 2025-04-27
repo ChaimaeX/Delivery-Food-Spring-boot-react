@@ -36,12 +36,16 @@ public class CartServiceImp implements CartService {
 
         Food food = foodService.findFoodById(req.getFoodId());
 
-        Cart cart = cartRepos.findByCustomerId(user.getId());
+        Cart cart = cartRepos.findByCustomer(user);
 
-        for(CartItem cartItem : cart.getItem()){
+        for (CartItem cartItem : cart.getItem()) {
             if (cartItem.getFood().equals(food)) {
-                int newQuantity=cartItem.getQuantity()+req.getQuantity();
-                return updateCartItemQuantity(cartItem.getId(), newQuantity);
+                // Comparaison des ingrédients
+                if (cartItem.getIngredients().equals(req.getIngredients())) {
+                    // Même food et mêmes ingrédients: on met à jour la quantité
+                    int newQuantity = cartItem.getQuantity() + req.getQuantity();
+                    return updateCartItemQuantity(cartItem.getId(), newQuantity);
+                }
             }
         }
 
@@ -73,7 +77,7 @@ public class CartServiceImp implements CartService {
     @Override
     public Cart removeItemFromCart(Long cartItemId, String jwt) throws Exception {
        User user=userService.findUserByJwtToken(jwt);
-       Cart cart=cartRepos.findByCustomerId(user.getId());
+       Cart cart=cartRepos.findByCustomer(user);
 
        Optional<CartItem> cartItemOptional = cartItemRepos.findById(cartItemId);
 
@@ -109,16 +113,18 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
-    public Cart findCartByUserId(Long UserId) throws Exception {
-    //    User user=userService.findUserByJwtToken(jwt);
-       Cart cart=cartRepos.findByCustomerId(UserId);
+    public Cart findCartByUserId(Long id , String jwt) throws Exception {
+       User user=userService.findUserByJwtToken(jwt);
+       Cart cart=cartRepos.findByCustomer(user);
        cart.setTotal(calculateCartTotal(cart));
        return cart;
     }
 
     @Override
-    public Cart cleanCart(Long userId) throws Exception {
-        Cart cart=findCartByUserId(userId);
+    public Cart cleanCart(User user) throws Exception {
+
+        
+        Cart cart=cartRepos.findByCustomer(user);
         cart.getItem().clear();   
         
         return cartRepos.save(cart);

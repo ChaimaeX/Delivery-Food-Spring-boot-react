@@ -23,6 +23,10 @@ const initialValues = {
   instagram: "",
   facebook: "",
   openingHours: "Mon-Sun : 9:00 AM - 12:00 PM",
+  location: { // Nouvel objet pour la localisation
+    latitude: "",
+    longitude: ""
+  },
   images: []
 };
 
@@ -43,6 +47,8 @@ const CreateRestaurantForm = () => {
           stateProvince: values.stateProvince,
           postalCode: values.postalCode,
           country: values.country,
+          latitude: values.location.latitude,
+          longitude: values.location.longitude,
         },
         contactInformation: {
           email: values.email,
@@ -57,6 +63,23 @@ const CreateRestaurantForm = () => {
       dispatch(createRestaurant({data,token:jwt}))
     },
   });
+
+  const handleAutolocate = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          formik.setFieldValue("location.latitude", position.coords.latitude);
+          formik.setFieldValue("location.longitude", position.coords.longitude);
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          alert("Impossible d'obtenir la localisation. Veuillez entrer les coordonnées manuellement.");
+        }
+      );
+    } else {
+      alert("La géolocalisation n'est pas supportée par votre navigateur.");
+    }
+  };
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -130,6 +153,7 @@ const CreateRestaurantForm = () => {
               "streetAddress",
               "stateProvince",
               "postalCode",
+              "city",
               "country",
               "email",
               "mobile",
@@ -148,8 +172,48 @@ const CreateRestaurantForm = () => {
                 />
               </Grid>
             ))}
-          </Grid>
+          
 
+             {/* Nouveaux champs pour la localisation */}
+             <Grid item xs={12}>
+              <h3 className="text-lg font-semibold mb-2">Location Coordinates</h3>
+            </Grid>
+            
+            <Grid item xs={12} lg={6}>
+              <TextField
+                fullWidth
+                id="latitude"
+                name="location.latitude"
+                label="Latitude"
+                variant="outlined"
+                onChange={formik.handleChange}
+                value={formik.values.location.latitude}
+              />
+            </Grid>
+            
+            <Grid item xs={12} lg={6}>
+              <TextField
+                fullWidth
+                id="longitude"
+                name="location.longitude"
+                label="Longitude"
+                variant="outlined"
+                onChange={formik.handleChange}
+                value={formik.values.location.longitude}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Button 
+                variant="outlined" 
+                onClick={handleAutolocate}
+                sx={{ mb: 2 }}
+              >
+                Auto-detect Location
+              </Button>
+            </Grid>
+          </Grid>
+          
           <Button className="mt-4" variant="contained" color="primary" type="submit">
             Create Restaurant
           </Button>

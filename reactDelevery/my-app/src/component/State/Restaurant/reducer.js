@@ -2,7 +2,7 @@ import * as ActionTypes from "./ActionType";
 
 const initialState = {
     restaurants: [],
-    usersRestaurant: [],
+    usersRestaurant: null,
     restaurant: null,
     loading: false,
     error: null,
@@ -24,6 +24,7 @@ const restaurantReducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
                 error: null,
+                restaurants: [],
             };
 
         case ActionTypes.CREATE_RESTAURANT_SUCCESS:

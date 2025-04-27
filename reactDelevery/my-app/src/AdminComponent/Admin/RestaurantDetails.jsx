@@ -46,7 +46,7 @@ const RestaurantDetails = () => {
                 <p className='w-48'>Owner</p>
                 <p className='text-gray-400'>
                   <span  className='pr-5' >-</span>
-                  {restaurant.usersRestaurant?.owner.fullName}
+                  {restaurant.usersRestaurant?.owner?.fullName}
                 </p>
               </div>
               <div className='flex'>

@@ -1,50 +1,119 @@
-import { Card, FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { 
+  Card, 
+  FormControl, 
+  FormControlLabel, 
+  Radio, 
+  RadioGroup, 
+  Typography,
+  Box,
+  CircularProgress,
+  Alert
+} from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import OrderTable from './OrderTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { 
+  fetchRestaurantOrder, 
+  filterOrder 
+} from '../../component/State/Restaurant_order/Action';
 
-const ordersStatus = [
-  { label: "Pending", value: "PENDING" },
-  { label: "Completed", value: "COMPLETED" },
-  { label: "All", value: "All" },
+const orderStatusOptions = [
+  { label: "Pending", value: "PENDING", color: "warning" },
+  { label: "Completed", value: "COMPLETED", color: "success" },
+  { label: "All Orders", value: "ALL", color: "default" },
 ];
 
 const Orders = () => {
-  const [filterValue, setFilterValue] = useState();  // Initialisation à "All" pour correspondre au premier élément
+  const [filterValue, setFilterValue] = useState("ALL");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  
+  const dispatch = useDispatch();
+  const { restaurant, restaurantOrder } = useSelector((store) => store);
+  const jwt = localStorage.getItem("jwt");
+  const restaurantId = restaurant.usersRestaurant?.id;
 
-  const handleFilter = (value) => {
-    setFilterValue(value);  // Accès à la valeur de l'option sélectionnée
-    console.log('value',value);
-    
+  const handleFilterChange = (event) => {
+    setFilterValue(event.target.value);
   };
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        if (filterValue === "ALL") {
+          await dispatch(fetchRestaurantOrder({
+            jwt,
+            restaurantId
+          }));
+        } else {
+          await dispatch(filterOrder({
+            restaurantId,
+            orderStatus: filterValue,
+            jwt
+          }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch orders:", err);
+        setError("Failed to load orders. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (restaurantId && jwt) {
+      fetchOrders();
+    }
+  }, [filterValue, restaurantId, dispatch, jwt]);
+
   return (
-    <div className='px-2'>
-      <Card className='p-5'>
-        <Typography sx={{ paddingBottom: "1rem" }} variant='h5'>
+    <Box sx={{ p: 2 }}>
+      <Card sx={{ p: 3, mb: 3 }}>
+        <Typography variant='h5' gutterBottom>
           Order Status
         </Typography>
-        <FormControl>
+        
+        <FormControl component="fieldset">
           <RadioGroup
-            onChange={handleFilter}
             row
-            name='category'
-            value={filterValue}  
+            aria-label="order-status"
+            name="order-status-radio"
+            value={filterValue}
+            onChange={handleFilterChange}
           >
-            {ordersStatus.map((item) => 
+            {orderStatusOptions.map((item) => (
               <FormControlLabel
-                key={item.value}  // Utiliser 'item.value' comme clé pour une meilleure unicité
+                key={item.value}
                 value={item.value}
-                control={<Radio />}
+                control={<Radio color={item.color} />}
                 label={item.label}
-                sx={{ color: "gray" }}
+                sx={{ 
+                  color: theme => theme.palette[item.color]?.main || 'text.primary',
+                  mr: 3
+                }}
               />
-            )}
+            ))}
           </RadioGroup>
         </FormControl>
       </Card>
 
-      <OrderTable />
-    </div>
+      {loading ? (
+        <Box display="flex" justifyContent="center" p={4}>
+          <CircularProgress />
+        </Box>
+      ) : error ? (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {error}
+        </Alert>
+      ) : (
+        <OrderTable 
+          orders={restaurantOrder?.orders || []} 
+          loading={loading}
+        />
+      )}
+    </Box>
   );
 };
 
